@@ -1,0 +1,24 @@
+.navbar{
+    display: flex;
+    justify-content: space-between;
+    
+  }
+  
+  .navbar .sides{
+    display: flex;
+    /* background-color: yellow; */
+    align-items: center;
+  }
+  
+  .navbar .sides .navTags{
+    list-style: none;
+    margin-left: 10px;
+    color: white;
+    font-size: small;
+    font-weight: 600;
+  }
+  
+  .navbar .rightSide{
+    padding-right: 20px;
+  }
+  
