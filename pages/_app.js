@@ -11,7 +11,7 @@ import { PrimeReactProvider, PrimeReactContext } from 'primereact/api';
 function MyApp({Component, pageProps}){
     const [article, setarticle] = useState()
   const newsFetch = async () => {
-    const news = await fetch(`http://localhost:3000/api/hello`)
+    const news = await fetch(`/api/hello`)
     const newObj = await news.json();
     setarticle(newObj)
   }
