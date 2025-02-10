@@ -1,107 +1,111 @@
 import Head from 'next/head';
 import styles from '../styles/Home.module.css';
-import Image from 'next/image'
-import { Button } from '@heroui/react'
+import { easeOut, motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
+import Link from 'next/link';
 
-export default function Home({newsFetch, article}) {
+export default function Home({ ArticlesObj }) {
+  const [article, setarticle] = useState([])
   useEffect(()=>{
-    newsFetch()
-  }, [])
+    const articleArr = ArticlesObj.slice(0, 6)
+      setarticle(articleArr);
+    },[ArticlesObj])
   return (
-    <div classNameName={styles.container}>
+    <div className={styles.container}>
       <Head>
         <title>Beacon</title>
       </Head>
-       <main className="">
+      <main className="">
         <section className="text-gray-600 body-font">
           <div className="container mx-auto flex px-5 py-24 pt-10 md:flex-row flex-col items-center">
-            <div className="lg:flex-grow md:w-1/2 lg:pr-24 md:pr-16 flex flex-col md:items-start md:text-left mb-16 md:mb-0 items-center text-center">
+            <motion.div
+              initial={{ x: -100, opacity: 0 }}
+              whileInView={{ x: 0, opacity: 1 }}
+              transition={{ duration: 0.8, ease: "easeOut" }}
+              className="lg:flex-grow md:w-1/2 lg:pr-24 md:pr-16 flex flex-col md:items-start md:text-left mb-16 md:mb-0 items-center text-center">
               <h1 className="title-font sm:text-4xl text-3xl mb-4 font-medium text-white">
-                <b className="hidden lg:inline-block">{article && article[0].title}</b>
+                <b className="hidden lg:inline-block">{article?.[3]?.title}</b>
               </h1>
-              <p className="mb-8 leading-relaxed">{article && article[0].description}</p>
+              <p className="mb-8 leading-relaxed">{article?.[3]?.description}</p>
               <div className="flex justify-center">
-                <button className="inline-flex text-white bg-yellow-500 border-0 py-2 px-6 focus:outline-none hover:bg-yellow-600 rounded text-lg">Read More</button>
-
+                <Link href={`blogpost/${article?.[3]?.slug}`}>
+                  <button className="inline-flex text-white bg-yellow-500 border-0 py-2 px-6 focus:outline-none hover:bg-yellow-600 rounded text-lg">Read More</button>
+                </Link>
               </div>
-            </div>
-            <div className="lg:max-w-lg lg:w-full md:w-1/2 w-5/6">
-              <img className=" rounded" alt={article && article[0].title} src={article && article[0].image} />
-            </div>
+            </motion.div>
+            <motion.div className="lg:max-w-lg lg:w-full md:w-1/2 w-5/6"
+              initial={{ x: 100, opacity: 0 }}
+              whileInView={{ x: 0, opacity: 1 }}
+              transition={{ duration: 0.8, ease: "easeOut" }}
+            >
+              <img className=" rounded" alt={article?.[3]?.title} src={article?.[3]?.image}/>
+            </motion.div>
           </div>
         </section>
-
         <section className="text-gray-600 body-font">
-          <div className="container px-5 py-24 mx-auto flex flex-wrap">
-            <div className="lg:w-2/3 mx-auto">
-              <div className="flex flex-wrap w-full bg-gray-100 py-32 px-10 relative mb-4">
-                <img alt="gallery" className="w-full object-cover h-full object-center block opacity-25 absolute inset-0" src={article && article[1].image} />
-                <div className="text-center relative z-10 w-full">
-                  <h2 className="text-2xl text-gray-900 font-medium title-font mb-2">{article && article[1].title}</h2>
-                  <p className="leading-relaxed">`{article && article[1].description}</p>
-                  <a className="mt-3 text-yellow-500 inline-flex items-center">Learn More
-                    <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" className="w-4 h-4 ml-2" viewBox="0 0 24 24">
-                      <path d="M5 12h14M12 5l7 7-7 7"></path>
-                    </svg>
-                  </a>
-                </div>
-              </div>
-              <div className="flex flex-wrap -mx-2">
-                <div className="px-2 w-1/2">
-                  <div className="flex flex-wrap w-full bg-gray-100 sm:py-24 py-16 sm:px-10 px-6 relative">
-                    <img alt="gallery" className="w-full object-cover h-full object-center block opacity-25 absolute inset-0" src={article && article[2].image} />
-                    <div className="text-center relative z-10 w-full">
-                      <h2 className="text-xl text-gray-900 font-medium title-font mb-2">{article && article[2].title}</h2>
-                      <p className="leading-relaxed">{article && article[2].description}</p>
-                      <a className="mt-3 text-yellow-500 inline-flex items-center">Learn More
-                        <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" className="w-4 h-4 ml-2" viewBox="0 0 24 24">
-                          <path d="M5 12h14M12 5l7 7-7 7"></path>
-                        </svg>
-                      </a>
+          <div className="container px-5 py-24 mx-auto">
+            <div className="flex flex-wrap -m-4">
+              {article && article.map((element) => (
+                <motion.div
+                  key={element.slug}
+                  initial={{ y: -100, opacity: 0 }}
+                  whileInView={{ y: 0, opacity: 1 }}
+                  transition={{ duration: 0.8, ease: "easeOut" }}
+                  className="p-4 md:w-1/3"
+                >
+                  <div className="h-full border-2 border-gray-200 border-opacity-60 rounded-lg overflow-hidden">
+                    <img className="lg:h-48 md:h-36 w-full object-cover object-top" src={element.image} alt="blog" />
+                    <div className="p-6">
+                      <h2 className="tracking-widest text-xs title-font font-medium text-gray-400 mb-1">
+                        {element.category}
+                      </h2>
+                      <h1 className="title-font text-lg font-medium text-white mb-3">
+                        {element.title}
+                      </h1>
+                      <p className="leading-relaxed mb-3">{element.description}</p>
+                      <div className="flex items-center flex-wrap">
+                        <Link href={`blogpost/${element.slug}`} className="text-indigo-500 inline-flex items-center md:mb-2 lg:mb-0">
+                          Learn More
+                          <svg className="w-4 h-4 ml-2" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round">
+                            <path d="M5 12h14"></path>
+                            <path d="M12 5l7 7-7 7"></path>
+                          </svg>
+                        </Link>
+                        <span className="text-gray-400 mr-3 inline-flex items-center lg:ml-auto md:ml-0 ml-auto leading-none text-sm pr-3 py-1 border-r-2 border-gray-200">
+                          <svg className="w-4 h-4 mr-1" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24">
+                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                            <circle cx="12" cy="12" r="3"></circle>
+                          </svg>
+                          1.2K
+                        </span>
+                        <span className="text-gray-400 inline-flex items-center leading-none text-sm">
+                          <svg className="w-4 h-4 mr-1" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24">
+                            <path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"></path>
+                          </svg>
+                          6
+                        </span>
+                      </div>
                     </div>
                   </div>
-                </div>
-                <div className="px-2 w-1/2">
-                  <div className="flex flex-wrap w-full bg-gray-100 sm:py-24 py-16 sm:px-10 px-6 relative">
-                    <img alt="gallery" className="w-full object-cover h-full object-center block opacity-25 absolute inset-0" src={article && article[3].image} />
-                    <div className="text-center relative z-10 w-full">
-                      <h2 className="text-xl text-gray-900 font-medium title-font mb-2">{article && article[3].title}</h2>
-                      <p className="leading-relaxed">{article && article[3].description}</p>
-                      <a className="mt-3 text-yellow-500 inline-flex items-center">Learn More
-                        <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" className="w-4 h-4 ml-2" viewBox="0 0 24 24">
-                          <path d="M5 12h14M12 5l7 7-7 7"></path>
-                        </svg>
-                      </a>
-                    </div>
-                  </div>
+                </motion.div>
+              ))}
+              <div className="mx-auto">
+                <Link
+                href={'/allarticles'}
+                >
+                <button className="inline-flex text-white bg-yellow-500 border-0 py-2 px-6 focus:outline-none hover:bg-yellow-600 rounded text-lg">Read More</button>
+                </Link>
+              <div className="m-auto text-white text-lg mt-10 border-white">
+                  <h3>Syed Wajahat</h3>
                 </div>
               </div>
             </div>
           </div>
         </section>
 
-        <section class="text-gray-600 body-font">
-          <div class="container px-5 py-24 mx-auto">
-            <div class="flex flex-col text-center w-full mb-20">
-              <h1 class="sm:text-3xl text-2xl font-medium title-font mb-3 text-white">About Me</h1>
-            </div>
-            <div class="flex justify-center -m-2">
-              <div class="p-2 lg:w-1/3 md:w-1/2 w-full">
-                <div class="h-full flex items-center border-gray-200 border p-4 rounded-lg">
-                  <img alt="team" class="w-16 h-16 bg-gray-100 object-cover object-center flex-shrink-0 rounded-full mr-4" src="profile.jpeg" />
-                  <div class="flex-grow">
-                    <h2 class="text-white title-font font-medium">Maaz Haider</h2>
-                    <p class="text-gray-400">Software Engineer</p>
-                  </div>
-                </div>
-              </div>
-              
-            </div>
-          </div>
-        </section>
-      </main> 
-      
+
+      </main>
+
     </div>
   );
 }

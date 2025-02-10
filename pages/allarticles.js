@@ -2,11 +2,10 @@ import Link from 'next/link'
 import {React, useState, useEffect} from 'react'
 import { motion } from 'framer-motion'
 
-const tech = ({ArticlesObj}) => {
+const Allarticles = ({ArticlesObj}) => {
   const [Techarticles, setTecharticles] = useState([])
   useEffect(()=>{
-    const articlesArr = ArticlesObj.filter(element => element.category === "Technology");
-    setTecharticles(articlesArr);
+    setTecharticles(ArticlesObj);
   },[ArticlesObj])
 
   return (
@@ -62,4 +61,4 @@ const tech = ({ArticlesObj}) => {
   )
 }
 
-export default tech
+export default Allarticles
