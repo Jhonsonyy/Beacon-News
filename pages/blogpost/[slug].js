@@ -6,7 +6,7 @@ const slug = () => {
     let Router = useRouter()
    const {slug} = Router.query;
    const getArticle = async()=> {
-    const news = await fetch(`http://localhost:3000/api/hello?slug=${slug}`)
+    const news = await fetch(`api/hello?slug=${slug}`)
     const data = await news.json();
     setArticle(data);
    }
@@ -30,11 +30,13 @@ const slug = () => {
         </div>
       </div>
     </div>
-  </section> : <motion.div className='font-bold text-xl'
-      initial={{y: 0, opacity: 0}}
-      animate = {{y: 0, opacity: 1}}
-      transition={{duration: 1, repeat: Infinity}}
-      >Loading...</motion.div>}
+  </section> : <div className="flex justify-center items-center h-96">
+    <motion.div className='font-bold text-2xl'
+        initial={{y: 0, opacity: 1, color: "#FFA500"}}
+        animate = {{y: 0, opacity: 1, color: "#FFFFFF"}}
+        transition={{duration: 2, repeat: Infinity, repeatType: "reverse"}}
+        >Loading...</motion.div>
+  </div>}
       </div>
   )
 }
