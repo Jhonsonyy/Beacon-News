@@ -6,7 +6,7 @@ const slug = () => {
     let Router = useRouter()
    const {slug} = Router.query;
    const getArticle = async()=> {
-    const news = await fetch(`api/hello?slug=${slug}`)
+    const news = await fetch(`/api/hello?slug=${slug}`)
     const data = await news.json();
     setArticle(data);
    }
